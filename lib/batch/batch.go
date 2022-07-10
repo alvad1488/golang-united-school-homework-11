@@ -41,13 +41,11 @@ func getBatch(n int64, pool int64) (res []user) {
 	}
 
 	nChan := make(chan int64)
-
 	//init goroutines
-	wg.Add(int(pool))
 	for i := 1; i <= int(pool); i++ {
+		wg.Add(1)
 		go addUser(&userList, nChan, &wg, &mx)
 	}
-
 	//write into channel
 	for j := 0; j < int(n); j++ {
 		nChan <- int64(j)
